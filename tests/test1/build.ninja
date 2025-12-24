@@ -1,0 +1,49 @@
+ninja_required_version = 1.13.2
+
+compiler = clang
+compile_flags = -march=native -O2 -pipe -flto -std=c23 -Wall -Wextra -Wpedantic -Wconversion -Wfloat-conversion -Wsign-conversion -Wdeprecated-declarations -Wshadow -Wformat=2 -Wvla -Wnull-dereference -Wstack-protector -Wcast-qual -Wconditional-uninitialized -Wtautological-constant-in-range-compare -Wcomma -Wassign-enum -Wbad-function-cast -Wpointer-arith -Widiomatic-parentheses -Wthread-safety -Wswitch-default -Wundef -Warray-bounds-pointer-arithmetic -Wshift-sign-overflow -Wempty-body -Wstrict-prototypes -fdiagnostics-color=always -D_POSIX_C_SOURCE=200112L
+compile_shared_flags = -fPIC
+link_flags = -flto
+link_shared_flags = -shared -flto
+
+
+# paths
+sources_path = ../../src
+build_directory = build
+output_name = test1
+
+
+# rules
+rule compile
+  command = $compiler $INCLUDES $compile_flags -c $in -o $out
+
+rule compile_shared
+  command = $compiler $INCLUDES $compile_flags $compile_shared_flags -c $in -o $out
+
+rule link
+  command = $compiler $link_flags $in -o $out $FLAGS
+
+rule link_shared
+  command = $compiler $link_shared_flags $in -o $out $FLAGS
+
+
+# object files
+build $build_directory/main.o: compile main.c
+  INCLUDES = -I../../include
+
+build $build_directory/httpsClientConnect.o: compile_shared $sources_path/httpsClientConnect.c
+  INCLUDES = -I../../include
+
+build $build_directory/tryTlsConnect.o: compile_shared $sources_path/tryTlsConnect.c
+  INCLUDES = -I../../include
+
+
+# output files
+build $build_directory/$output_name: link $build_directory/main.o
+
+build $build_directory/libnet-client.so: link_shared $build_directory/httpsClientConnect.o $build_directory/tryTlsConnect.o
+  FLAGS = -L/usr/lib64 -lssl -lcrypto
+
+
+default $build_directory/$output_name
+default $build_directory/libnet-client.so
