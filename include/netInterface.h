@@ -11,7 +11,7 @@
 #define CALLBACK_CLOSE_CONNECTION 1
 
 
-typedef uint8_t (*PFN_httpsUserCallback)(
+typedef uint8_t (*PFN_netUserCallback)(
 	const char *const	pResponse,
 	const uint16_t		currentResponseLen,
 	char*			pRequest,
@@ -20,10 +20,10 @@ typedef uint8_t (*PFN_httpsUserCallback)(
 	void*			pUserData,
 	const uint8_t		prevCallbackReturnValue);
 
-
-typedef int (*PFN_httpsClientConnect)(
+typedef int (*PFN_clientConnectSsl)(
 	const char *const		pHostname,
-	PFN_httpsUserCallback		userCallback,
+	const uint16_t			port,
+	PFN_netUserCallback		userCallback,
 	const uint16_t			requestMaxLen,
 	const uint16_t			responseMaxLen,
 	void*				pUserData);

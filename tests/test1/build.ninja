@@ -31,7 +31,7 @@ rule link_shared
 build $build_directory/main.o: compile main.c
   INCLUDES = -I../../include
 
-build $build_directory/httpsClientConnect.o: compile_shared $sources_path/httpsClientConnect.c
+build $build_directory/clientConnectSsl.o: compile_shared $sources_path/clientConnectSsl.c
   INCLUDES = -I../../include
 
 build $build_directory/tryTlsConnect.o: compile_shared $sources_path/tryTlsConnect.c
@@ -41,7 +41,7 @@ build $build_directory/tryTlsConnect.o: compile_shared $sources_path/tryTlsConne
 # output files
 build $build_directory/$output_name: link $build_directory/main.o
 
-build $build_directory/libnet-client.so: link_shared $build_directory/httpsClientConnect.o $build_directory/tryTlsConnect.o
+build $build_directory/libnet-client.so: link_shared $build_directory/clientConnectSsl.o $build_directory/tryTlsConnect.o
   FLAGS = -L/usr/lib64 -lssl -lcrypto
 
 

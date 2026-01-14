@@ -56,12 +56,12 @@ int main()
 		return -1;
 	}
 
-	PFN_httpsClientConnect httpsClientConnect = (PFN_httpsClientConnect) dlsym(netClientLib, "httpsClientConnect");
+	PFN_clientConnectSsl clientConnectSsl = (PFN_clientConnectSsl) dlsym(netClientLib, "clientConnectSsl");
 
 
 	char userData[] = "test data123";
 
-	if (httpsClientConnect("1.1.1.1", userCallback, /*request max len ->*/ (uint16_t)1024, /*response max len -> */ (uint16_t)1024, (void*)userData) != 0)
+	if (clientConnectSsl("1.1.1.1", 443, userCallback, /*request max len ->*/ (uint16_t)1024, /*response max len -> */ (uint16_t)1024, (void*)userData) != 0)
 	{
 		fprintf(stderr, "RED" "httpsClientConnect() failed" "RESET_COLOR" "\n");
 		return -1;
