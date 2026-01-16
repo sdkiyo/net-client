@@ -29,6 +29,7 @@ typedef int (*PFN_clientConnectSsl)(
 	void*				pUserData);
 
 
+#include "websocket.inl"
 
 
 #endif // NET_CLIENT_INCLUDE_NET_INTERFACE_H_

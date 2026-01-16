@@ -11,6 +11,7 @@
 
 // хотелось бы добавить подключение по прямому ip
 // и подключение без ssl
+// предложение передавать pHostname в userCallback
 
 
 int clientConnectSsl(const char *const pHostname, const uint16_t port, PFN_netUserCallback userCallback, const uint16_t requestMaxLen, const uint16_t responseMaxLen, void* pUserData)
@@ -173,7 +174,7 @@ int clientConnectSsl(const char *const pHostname, const uint16_t port, PFN_netUs
 				printf("\033[31m" "SSL_read() error\033[0m\n");
 				break;
 			}
-			if (temp < 1369)
+			if (temp < 1369)// FIXME теоретически тут есть редкий баг что если сервер отправил ровно 1369 байт то SSL_read() ещё раз вызовется но читать уже будет нечего потому все байты уже прочитаны и прога зависнет
 			{
 				currentResponseLen += temp;
 				break;
